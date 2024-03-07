@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table{
+            text-align: center;
+        }
+        th{
+            margin-left: 15px;
+        }
+        table{
+            width: 600px;
+            height:auto;
+        }
+
+    </style>
+    <link href="/static/home.css">
+
+</head>
+<body>
+<h1>데이터 테스트</h1>
+<span>시나리오는 서울에서 살고 싶은 70대 노인<br>동네에 편의점과 음식점이 많아야함 <br>또한 치안과 공기가 좋아야함<br>조건: 1.서울 2 편의시설: 편의점,음식점,치안,공기</vr></span>
+<br>
+<!--<button class="ranking">지역별 편의시설 순위</button>-->
+<!--<button class="information">지역별 편의시설 정보</button>-->
+<!--<button class="attribute">지역별 편의시설 속성</button>-->
+<!--<button class="count">지역별 편의시설 수</button>-->
+<button class="recommend">추천</button>
+
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector('.recommend').addEventListener('click', function () {
+            // URLSearchParams 객체를 사용하여 쿼리 문자열을 생성합니다.
+            const queryParams = new URLSearchParams({
+                accessToken: '0f2d1e94-2d80-4f76-8a24-35f0d5127168',
+                sido_cd: '11',
+                theme_cd: '2003'
+            });
+
+            // 쿼리 매개변수를 포함한 전체 URL을 구성합니다.
+            const apiUrl = `https://sgisapi.kostat.go.kr/OpenAPI3/startupbiz/sggtobrank.json?${queryParams}`;
+
+            // GET 요청을 위한 설정입니다.
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // 데이터 처리 로직
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    });
+
+
+
+
+
+    function displayDataInTable(data) {
+        // Create a table
+        const table = document.createElement('table');
+        // Add a table header row
+        const thead = table.createTHead();
+        const headerRow = thead.insertRow();
+
+        // Assuming data is an array of objects, and all objects have the same keys
+        if(data.length > 0) {
+            Object.keys(data[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+        }
+
+        // Add data to the table
+        const tbody = table.createTBody();
+        data.forEach(item => {
+            const row = tbody.insertRow();
+            Object.values(item).forEach(value => {
+                const cell = row.insertCell();
+                cell.textContent = value;
+            });
+        });
+
+        // Append the table to the body or another element of your choice
+        document.body.appendChild(table);
+    }
+
+</script>
+</html>
