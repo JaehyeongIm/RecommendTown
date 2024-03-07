@@ -28,18 +28,23 @@
 <!--<button class="information">지역별 편의시설 정보</button>-->
 <!--<button class="attribute">지역별 편의시설 속성</button>-->
 <!--<button class="count">지역별 편의시설 수</button>-->
-<button class="recommend">추천</button>
+<button class="recommend" data-id="11">서울/편의점 검색</button>
+<button class="recommend" data-id="12">서울/음식점 검색</button>
+<button class="recommend" data-id="12">서울/음식점 검색</button>
+<button class="recommend" data-id="12">서울/음식점 검색</button>
+<button class="recommend" data-id="12">서울/음식점 검색</button>
+<button class="recommend" data-id="12">서울/음식점 검색</button>
 
-
+<div id="content"></div>
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        document.querySelector('.recommend').addEventListener('click', function () {
+        document.querySelector('.recommendStore').addEventListener('click', function () {
             // URLSearchParams 객체를 사용하여 쿼리 문자열을 생성합니다.
             const queryParams = new URLSearchParams({
                 accessToken: '0f2d1e94-2d80-4f76-8a24-35f0d5127168',
                 sido_cd: '11',
-                theme_cd: '2003'
+                theme_cd: this.dataset.id
             });
 
             // 쿼리 매개변수를 포함한 전체 URL을 구성합니다.
@@ -49,8 +54,8 @@
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    // 데이터 처리 로직
-                    console.log(data);
+                    // 데이터를 테이블로 표시하는 함수
+                    displayDataInTable(data.result.sgg_info);
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -58,39 +63,48 @@
         });
     });
 
-
-
-
-
-    function displayDataInTable(data) {
-        // Create a table
+    function displayDataInTable(sgg_info) {
+        // 테이블 요소를 생성합니다.
         const table = document.createElement('table');
-        // Add a table header row
+        table.style.width = '40%';
+        table.style.textAlign = 'center';
+
+        // 테이블 헤더를 생성합니다.
         const thead = table.createTHead();
         const headerRow = thead.insertRow();
 
-        // Assuming data is an array of objects, and all objects have the same keys
-        if(data.length > 0) {
-            Object.keys(data[0]).forEach(key => {
-                const th = document.createElement('th');
-                th.textContent = key;
-                headerRow.appendChild(th);
-            });
-        }
-
-        // Add data to the table
-        const tbody = table.createTBody();
-        data.forEach(item => {
-            const row = tbody.insertRow();
-            Object.values(item).forEach(value => {
-                const cell = row.insertCell();
-                cell.textContent = value;
-            });
+        // '시군구명'과 '사업체수' 헤더를 추가합니다.
+        ['시군구명', '편의점 수'].forEach(text => {
+            const th = document.createElement('th');
+            th.textContent = text;
+            headerRow.appendChild(th);
         });
 
-        // Append the table to the body or another element of your choice
-        document.body.appendChild(table);
+        // 테이블 바디를 생성합니다.
+        const tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+
+        // 데이터 각 행에 대해 반복합니다.
+        sgg_info.forEach(item => {
+            const row = tbody.insertRow();
+
+            // 시군구명(sgg_nm) 셀을 추가합니다.
+            const sggNmCell = row.insertCell();
+            sggNmCell.textContent = item.sgg_nm;
+
+            // 사업체수(corp_cnt) 셀을 추가합니다.
+            const corpCntCell = row.insertCell();
+            corpCntCell.textContent = item.corp_cnt;
+        });
+
+        // 테이블을 #content div에 추가합니다.
+        const contentDiv = document.getElementById('content');
+        contentDiv.innerHTML = ''; // 기존 내용을 비웁니다.
+        contentDiv.appendChild(table); // 새로운 테이블을 추가합니다.
+
+
     }
+
 
 </script>
 </html>
