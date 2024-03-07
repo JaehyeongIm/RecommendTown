@@ -4,57 +4,166 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        table{
+        table {
             text-align: center;
+            width: 600px;
+            height: auto;
         }
-        th{
+        th {
             margin-left: 15px;
         }
-        table{
-            width: 600px;
-            height:auto;
-        }
-
     </style>
     <link href="/static/home.css">
-
 </head>
 <body>
 <h1>데이터 테스트</h1>
-<!--요청 성공 코드-->
-<span>시나리오는 서울에서 살고 싶은 70대 노인<br>동네에 편의점과 음식점이 많아야함 <br>또한 치안과 공기가 좋아야함<br>조건: 1.서울 2 편의시설: 편의점,음식점,치안,공기</vr></span>
-<br>
-<!--<button class="ranking">지역별 편의시설 순위</button>-->
-<!--<button class="information">지역별 편의시설 정보</button>-->
-<!--<button class="attribute">지역별 편의시설 속성</button>-->
-<!--<button class="count">지역별 편의시설 수</button>-->
-<button class="recommend" data-id="11">서울/편의점 검색</button>
-<button class="recommend" data-id="12">서울/음식점 검색</button>
-<button class="recommend" data-id="12">서울/음식점 검색</button>
-<button class="recommend" data-id="12">서울/음식점 검색</button>
-<button class="recommend" data-id="12">서울/음식점 검색</button>
-<button class="recommend" data-id="12">서울/음식점 검색</button>
+<span>서울시의 편의시설 데이터</span>
+<br><br>
+
+<select id="categorySelect">
+    <option value="">카테고리를 선택하세요</option>
+    <!-- 농림어업 -->
+    <optgroup label="농림어업">
+        <option value="A001">농업</option>
+        <option value="A002">임업</option>
+        <option value="A003">어업</option>
+    </optgroup>
+    <!-- 기업 -->
+    <optgroup label="기업">
+        <option value="8001">제조/화학</option>
+        <option value="8002">서비스</option>
+        <option value="8003">통신/IT</option>
+        <option value="8004">건설</option>
+        <option value="8005">판매/유통</option>
+        <option value="8006">기타금융업</option>
+        <option value="8008">문화/체육</option>
+        <option value="B001">전기/가스/수도</option>
+        <option value="B002">환경</option>
+        <option value="B003">방송/미디어</option>
+        <option value="B004">연구개발</option>
+        <option value="B005">협회 및 단체</option>
+        <option value="B006">광업</option>
+        <option value="B007">운송</option>
+    </optgroup>
+    <!-- 소매업 -->
+    <optgroup label="소매업">
+        <option value="1001">인테리어</option>
+        <option value="2001">문구점</option>
+        <option value="2002">서점</option>
+        <option value="2003">편의점</option>
+        <option value="2004">식료품점</option>
+        <option value="2005">휴대폰점</option>
+        <option value="2006">의류</option>
+        <option value="2007">화장품/방향제</option>
+        <option value="2008">철물점</option>
+        <option value="2009">주유소</option>
+        <option value="2010">꽃집</option>
+        <option value="2011">슈퍼마켓</option>
+        <option value="9001">백화점/중대형마트</option>
+    </optgroup>
+    <!-- 생활서비스 -->
+    <optgroup label="생활서비스">
+        <option value="1002">목욕탕</option>
+        <option value="1006">부동산중개업</option>
+        <option value="1007">이발소</option>
+        <option value="1008">미용실</option>
+        <option value="1009">세탁소</option>
+        <option value="9002">은행</option>
+        <option value="D001">생활용품임대</option>
+        <option value="D002">독서실</option>
+        <option value="D003">생활용품수리</option>
+        <option value="D004">카센터</option>
+        <option value="D005">피부/미용</option>
+        <option value="D006">마사지</option>
+        <option value="D007">택배/배달</option>
+    </optgroup>
+    <!-- 교통 -->
+    <optgroup label="교통">
+        <option value="3001">지하철역</option>
+        <option value="3002">터미널</option>
+    </optgroup>
+    <!-- 여가생활 -->
+    <optgroup label="여가생활">
+        <option value="1010">PC방</option>
+        <option value="1011">노래방</option>
+        <option value="9004">극장/영화관</option>
+        <option value="9005">도서관/박물관</option>
+    </optgroup>
+    <!-- 음식 -->
+    <optgroup label="음식">
+        <option value="5001">한식</option>
+        <option value="5002">중식</option>
+        <option value="5003">일식</option>
+        <option value="5004">분식</option>
+        <option value="5005">서양식</option>
+        <option value="5006">제과점</option>
+        <option value="5007">패스트푸드</option>
+        <option value="5008">치킨</option>
+        <option value="5009">호프 및 간이주점</option>
+        <option value="5010">카페</option>
+        <option value="5011">기타 외국식</option>
+    </optgroup>
+    <!-- 교육 -->
+    <optgroup label="교육">
+        <option value="1003">교습학원</option>
+        <option value="1004">어학원</option>
+        <option value="1005">예체능학원</option>
+        <option value="7001">초등학교</option>
+        <option value="7002">중학교</option>
+        <option value="7003">고등학교</option>
+        <option value="7004">전문대학</option>
+        <option value="7005">대학교</option>
+        <option value="7006">대학원</option>
+        <option value="7007">어린이보육업</option>
+    </optgroup>
+    <!-- 의료 -->
+    <optgroup label="의료">
+        <option value="9003">병원</option>
+        <option value="J001">동물병원</option>
+        <option value="J002">약국</option>
+        <option value="J003">한방병원</option>
+        <option value="8007">기타의료업</option>
+    </optgroup>
+    <!-- 공공 -->
+    <optgroup label="공공">
+        <option value="6001">우체국</option>
+        <option value="6002">행정기관</option>
+        <option value="6003">경찰/지구대</option>
+        <option value="6004">소방서</option>
+    </optgroup>
+    <!-- 기타 -->
+    <optgroup label="기타">
+        <option value="9900">기타</option>
+    </optgroup>
+</select>
+
+
+<button id="searchBtn">검색</button>
 
 <div id="content"></div>
+
+<script src="/static/home.js"></script>
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        document.querySelector('.recommendStore').addEventListener('click', function () {
-            // URLSearchParams 객체를 사용하여 쿼리 문자열을 생성합니다.
+        document.getElementById('searchBtn').addEventListener('click', function () {
+            const selectedCategory = document.getElementById('categorySelect').value;
+            if (!selectedCategory) {
+                alert('카테고리를 선택하세요.');
+                return;
+            }
+
             const queryParams = new URLSearchParams({
                 accessToken: '0f2d1e94-2d80-4f76-8a24-35f0d5127168',
                 sido_cd: '11',
-                theme_cd: this.dataset.id
+                theme_cd: selectedCategory
             });
 
-            // 쿼리 매개변수를 포함한 전체 URL을 구성합니다.
             const apiUrl = `https://sgisapi.kostat.go.kr/OpenAPI3/startupbiz/sggtobrank.json?${queryParams}`;
 
-            // GET 요청을 위한 설정입니다.
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    // 데이터를 테이블로 표시하는 함수
                     displayDataInTable(data.result.sgg_info);
                 })
                 .catch(error => {
@@ -62,7 +171,6 @@
                 });
         });
     });
-
     function displayDataInTable(sgg_info) {
         // 테이블 요소를 생성합니다.
         const table = document.createElement('table');
@@ -74,7 +182,7 @@
         const headerRow = thead.insertRow();
 
         // '시군구명'과 '사업체수' 헤더를 추가합니다.
-        ['시군구명', '편의점 수'].forEach(text => {
+        ['시군구명', '시설 수'].forEach(text => {
             const th = document.createElement('th');
             th.textContent = text;
             headerRow.appendChild(th);
@@ -104,7 +212,76 @@
 
 
     }
-
-
 </script>
 </html>
+
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", function () {-->
+<!--        document.querySelector('.recommendStore').addEventListener('click', function () {-->
+<!--            // URLSearchParams 객체를 사용하여 쿼리 문자열을 생성합니다.-->
+<!--            const queryParams = new URLSearchParams({-->
+<!--                accessToken: '0f2d1e94-2d80-4f76-8a24-35f0d5127168',-->
+<!--                sido_cd: '11',-->
+<!--                theme_cd: this.dataset.id-->
+<!--            });-->
+
+<!--            // 쿼리 매개변수를 포함한 전체 URL을 구성합니다.-->
+<!--            const apiUrl = `https://sgisapi.kostat.go.kr/OpenAPI3/startupbiz/sggtobrank.json?${queryParams}`;-->
+
+<!--            // GET 요청을 위한 설정입니다.-->
+<!--            fetch(apiUrl)-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    // 데이터를 테이블로 표시하는 함수-->
+<!--                    displayDataInTable(data.result.sgg_info);-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('Error:', error);-->
+<!--                });-->
+<!--        });-->
+<!--    });-->
+
+<!--    function displayDataInTable(sgg_info) {-->
+<!--        // 테이블 요소를 생성합니다.-->
+<!--        const table = document.createElement('table');-->
+<!--        table.style.width = '40%';-->
+<!--        table.style.textAlign = 'center';-->
+
+<!--        // 테이블 헤더를 생성합니다.-->
+<!--        const thead = table.createTHead();-->
+<!--        const headerRow = thead.insertRow();-->
+
+<!--        // '시군구명'과 '사업체수' 헤더를 추가합니다.-->
+<!--        ['시군구명', '편의점 수'].forEach(text => {-->
+<!--            const th = document.createElement('th');-->
+<!--            th.textContent = text;-->
+<!--            headerRow.appendChild(th);-->
+<!--        });-->
+
+<!--        // 테이블 바디를 생성합니다.-->
+<!--        const tbody = document.createElement('tbody');-->
+<!--        table.appendChild(tbody);-->
+
+<!--        // 데이터 각 행에 대해 반복합니다.-->
+<!--        sgg_info.forEach(item => {-->
+<!--            const row = tbody.insertRow();-->
+
+<!--            // 시군구명(sgg_nm) 셀을 추가합니다.-->
+<!--            const sggNmCell = row.insertCell();-->
+<!--            sggNmCell.textContent = item.sgg_nm;-->
+
+<!--            // 사업체수(corp_cnt) 셀을 추가합니다.-->
+<!--            const corpCntCell = row.insertCell();-->
+<!--            corpCntCell.textContent = item.corp_cnt;-->
+<!--        });-->
+
+<!--        // 테이블을 #content div에 추가합니다.-->
+<!--        const contentDiv = document.getElementById('content');-->
+<!--        contentDiv.innerHTML = ''; // 기존 내용을 비웁니다.-->
+<!--        contentDiv.appendChild(table); // 새로운 테이블을 추가합니다.-->
+
+
+<!--    }-->
+
+
+<!--</script>-->
