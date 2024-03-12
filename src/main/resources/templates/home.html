@@ -13,11 +13,14 @@
             margin-left: 15px;
         }
     </style>
-    <link href="/static/home.css">
+    <link href="/home.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/home.js"></script>
+
 </head>
 <body>
 <h1>데이터 테스트</h1>
-<span>서울시의 편의시설 데이터</span>
+<span>서울시의 편의시설 데이터 (다른 도,시 도 가능합니다)</span>
 <br><br>
 
 <select id="categorySelect">
@@ -138,150 +141,23 @@
 </select>
 
 
-<button id="searchBtn">검색</button>
+<button id="count">편의시설 수 검색</button>
+<button id="location">강남 분석</button>
 
 <div id="content"></div>
-
-<script src="/static/home.js"></script>
+<div id="content2"></div>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById('searchBtn').addEventListener('click', function () {
-            const selectedCategory = document.getElementById('categorySelect').value;
-            if (!selectedCategory) {
-                alert('카테고리를 선택하세요.');
-                return;
-            }
-
-            const queryParams = new URLSearchParams({
-                accessToken: '0f2d1e94-2d80-4f76-8a24-35f0d5127168',
-                sido_cd: '11',
-                theme_cd: selectedCategory
-            });
-
-            const apiUrl = `https://sgisapi.kostat.go.kr/OpenAPI3/startupbiz/sggtobrank.json?${queryParams}`;
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    displayDataInTable(data.result.sgg_info);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    });
-    function displayDataInTable(sgg_info) {
-        // 테이블 요소를 생성합니다.
-        const table = document.createElement('table');
-        table.style.width = '40%';
-        table.style.textAlign = 'center';
-
-        // 테이블 헤더를 생성합니다.
-        const thead = table.createTHead();
-        const headerRow = thead.insertRow();
-
-        // '시군구명'과 '사업체수' 헤더를 추가합니다.
-        ['시군구명', '시설 수'].forEach(text => {
-            const th = document.createElement('th');
-            th.textContent = text;
-            headerRow.appendChild(th);
-        });
-
-        // 테이블 바디를 생성합니다.
-        const tbody = document.createElement('tbody');
-        table.appendChild(tbody);
-
-        // 데이터 각 행에 대해 반복합니다.
-        sgg_info.forEach(item => {
-            const row = tbody.insertRow();
-
-            // 시군구명(sgg_nm) 셀을 추가합니다.
-            const sggNmCell = row.insertCell();
-            sggNmCell.textContent = item.sgg_nm;
-
-            // 사업체수(corp_cnt) 셀을 추가합니다.
-            const corpCntCell = row.insertCell();
-            corpCntCell.textContent = item.corp_cnt;
-        });
-
-        // 테이블을 #content div에 추가합니다.
-        const contentDiv = document.getElementById('content');
-        contentDiv.innerHTML = ''; // 기존 내용을 비웁니다.
-        contentDiv.appendChild(table); // 새로운 테이블을 추가합니다.
 
 
-    }
-</script>
 </html>
 
-<!--<script>-->
-<!--    document.addEventListener("DOMContentLoaded", function () {-->
-<!--        document.querySelector('.recommendStore').addEventListener('click', function () {-->
-<!--            // URLSearchParams 객체를 사용하여 쿼리 문자열을 생성합니다.-->
-<!--            const queryParams = new URLSearchParams({-->
-<!--                accessToken: '0f2d1e94-2d80-4f76-8a24-35f0d5127168',-->
-<!--                sido_cd: '11',-->
-<!--                theme_cd: this.dataset.id-->
-<!--            });-->
 
-<!--            // 쿼리 매개변수를 포함한 전체 URL을 구성합니다.-->
-<!--            const apiUrl = `https://sgisapi.kostat.go.kr/OpenAPI3/startupbiz/sggtobrank.json?${queryParams}`;-->
+<!DOCTYPE html>
+<html>
+<head>
 
-<!--            // GET 요청을 위한 설정입니다.-->
-<!--            fetch(apiUrl)-->
-<!--                .then(response => response.json())-->
-<!--                .then(data => {-->
-<!--                    // 데이터를 테이블로 표시하는 함수-->
-<!--                    displayDataInTable(data.result.sgg_info);-->
-<!--                })-->
-<!--                .catch(error => {-->
-<!--                    console.error('Error:', error);-->
-<!--                });-->
-<!--        });-->
-<!--    });-->
-
-<!--    function displayDataInTable(sgg_info) {-->
-<!--        // 테이블 요소를 생성합니다.-->
-<!--        const table = document.createElement('table');-->
-<!--        table.style.width = '40%';-->
-<!--        table.style.textAlign = 'center';-->
-
-<!--        // 테이블 헤더를 생성합니다.-->
-<!--        const thead = table.createTHead();-->
-<!--        const headerRow = thead.insertRow();-->
-
-<!--        // '시군구명'과 '사업체수' 헤더를 추가합니다.-->
-<!--        ['시군구명', '편의점 수'].forEach(text => {-->
-<!--            const th = document.createElement('th');-->
-<!--            th.textContent = text;-->
-<!--            headerRow.appendChild(th);-->
-<!--        });-->
-
-<!--        // 테이블 바디를 생성합니다.-->
-<!--        const tbody = document.createElement('tbody');-->
-<!--        table.appendChild(tbody);-->
-
-<!--        // 데이터 각 행에 대해 반복합니다.-->
-<!--        sgg_info.forEach(item => {-->
-<!--            const row = tbody.insertRow();-->
-
-<!--            // 시군구명(sgg_nm) 셀을 추가합니다.-->
-<!--            const sggNmCell = row.insertCell();-->
-<!--            sggNmCell.textContent = item.sgg_nm;-->
-
-<!--            // 사업체수(corp_cnt) 셀을 추가합니다.-->
-<!--            const corpCntCell = row.insertCell();-->
-<!--            corpCntCell.textContent = item.corp_cnt;-->
-<!--        });-->
-
-<!--        // 테이블을 #content div에 추가합니다.-->
-<!--        const contentDiv = document.getElementById('content');-->
-<!--        contentDiv.innerHTML = ''; // 기존 내용을 비웁니다.-->
-<!--        contentDiv.appendChild(table); // 새로운 테이블을 추가합니다.-->
-
-
-<!--    }-->
-
-
-<!--</script>-->
+</head>
+<body>
+<div id="chart" style="width: 100%; height: 500px"></div>
+</body>
+</html>

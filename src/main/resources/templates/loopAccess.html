@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript">
+        var accessTaken = 'none';
+        var errCnt=0;
+        getAccessToken();
+        function getAccessToken(){
+            jQuery.ajax({
+                type:'GET',
+                url: 'https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json',
+                data:{
+                    consumer_key : 'f9067eed4cf041169895',
+                    consumer_secret : 'b0184a48f3244f74ae9c',
+                },
+                success:function(data){
+                    errCnt = 0;
+                    accessToken = data.result.accessToken
+                    alert(accessToken);
+                    geoCoe();
+                },
+                error:function(data) {
+                }
+            });
+        }
+        function geoCoe(){
+
+            var pagenum = '0';
+            var resultcount = '5';
+            jQuery.ajax({
+                type:'GET',
+                url: 'https://sgisapi.kostat.go.kr/OpenAPI3/addr/geocode.json',
+                data:{
+                    accessToken : accessToken,
+                    address : address,
+                    pagenum : pagenum,
+                    resultcount : resultcount,
+                },
+                success:function(data){
+                    switch (parseInt(data.errCd)){
+                        case 0:
+                            var totalcount = data.result.totalcount;
+                            for(var i=0; i<data.result.resultdata.length; i++){;
+                                var resultdata = data.result.resultdata[i];
+                                var x = resultdata.x;
+                                var y = resultdata.y;
+                            };
+                            break;
+                        case -401:
+                            errCnt ++;
+                            if(errCnt<200){
+                                getAccessToken();
+                            }
+                            break;
+                        case -100:
+                            break;
+                    }
+                },
+                error:function(data) {
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="chart" style="width: 100%; height: 500px"></div>
+</body>
+</html>
